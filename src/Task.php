@@ -5,12 +5,10 @@
         private $description;
         private $id;
 
-        function __construct($description, $id)
+        function __construct($description, $id = null)
         {
             $this->description = $description;
-            if($id !== null){
-                $this->id = $id;
-            }
+            $this->id = $id;
         }
 
         function setDescription($new_description)
@@ -57,6 +55,19 @@
         static function deleteAll()
         {
             $GLOBALS['DB']->exec("DELETE FROM tasks *;");
+        }
+
+        static function find($search_id)
+        {
+            $found_task = null;
+            $tasks = Task::getAll();
+            foreach($tasks as $task) {
+                $task_id = $task->getId();
+                if ($task_id == $search_id) {
+                    $found_task = $task;
+                }
+            }
+            return $found_task;
         }
     }
 
